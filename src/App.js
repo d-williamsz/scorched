@@ -240,7 +240,7 @@ function TeamSection() {
       </div>
 
       <div className="team-cta">
-        <a href="/team" className="team-cta-btn">Meet the Full Team</a>
+        <a href={`${process.env.PUBLIC_URL}/team`} className="team-cta-btn">Meet the Full Team</a>
       </div>
     </section>
   );
@@ -302,7 +302,7 @@ function ContactForm() {
 const HOME_LINKS = [
   { href: '#about',       label: 'About' },
   { href: '#coming-soon', label: 'Coming Soon' },
-  { href: '/team',        label: 'Team' },
+  { href: `${process.env.PUBLIC_URL}/team`,        label: 'Team' },
   { href: '#contact',     label: 'Contact' },
 ];
 

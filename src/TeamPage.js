@@ -170,10 +170,10 @@ const SUBTEAMS = [
 ];
 
 const TEAM_NAV_LINKS = [
-  { href: '/',          label: 'Home' },
-  { href: '/#about',    label: 'About' },
-  { href: '/#coming-soon', label: 'Coming Soon' },
-  { href: '/#contact',  label: 'Contact' },
+  { href: `${process.env.PUBLIC_URL}/`,          label: 'Home' },
+  { href: `${process.env.PUBLIC_URL}/#about`,    label: 'About' },
+  { href: `${process.env.PUBLIC_URL}/#coming-soon`, label: 'Coming Soon' },
+  { href: `${process.env.PUBLIC_URL}/#contact`,  label: 'Contact' },
 ];
 
 // ── Card constants ─────────────────────────────────────────────────────────────
@@ -299,7 +299,7 @@ function SubteamCarousel({ subteam }) {
 export default function TeamPage() {
   return (
     <div className="App">
-      <Navbar links={TEAM_NAV_LINKS} homeHref="/" />
+      <Navbar links={TEAM_NAV_LINKS} homeHref={`${process.env.PUBLIC_URL}/`} />
 
       <div className="tp-page">
         <h1 className="tp-heading">The Team</h1>

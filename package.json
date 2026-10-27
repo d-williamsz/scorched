@@ -2,6 +2,7 @@
   "name": "scorched_animation",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://d-williamsz.github.io/scorched",
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
