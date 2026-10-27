@@ -1,38 +1,1240 @@
-.App {
-  text-align: center;
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Google Fonts                                                                */
+/* ─────────────────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Doodle+Shadow&display=swap');
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Tokens                                                                      */
+/* ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --black:  #000000;
+  --yellow: #F7EE7F;
+  --orange: rgb(244, 186, 64);
+  --red:    rgb(233, 52, 36);
+  --purple: #A26AF2;
+  --white:  #fff;
+
+  --nav-height: 96px;
+  --container:  1100px;
+
+  --rule:  rgba(255, 255, 255, 0.14);
+  --muted: rgba(255, 255, 255, 0.78);
 }
 
-.App-logo {
-  height: 40vmin;
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Reset / base                                                                */
+/* ─────────────────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  /* clip instead of hidden — hidden creates a scroll container that breaks position:sticky */
+  overflow-x: clip;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--black);
+  color: var(--white);
+  scroll-behavior: smooth;
+}
+
+.App { padding-top: var(--nav-height); }
+
+section { scroll-margin-top: calc(var(--nav-height) + 16px); }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgba(242, 97, 87, 0.45);
+  outline-offset: 3px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Navbar                                                                      */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-height);
+  z-index: 100;
+
+  background: rgba(0, 0, 0, 0.92);
+
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+}
+
+.navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.06), transparent 60%);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.logo-icon {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter:
+    drop-shadow(0 0  3px rgba(240, 110,  15, 0.95))
+    drop-shadow(0 0  9px rgba(200,  55,  10, 0.80))
+    drop-shadow(0 0 20px rgba(150,  20,   5, 0.55));
+}
+
+.logo-text {
+  margin: 0;
+  font-family: 'Rubik Doodle Shadow', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.logo-text a {
+  color: var(--white);
+  text-decoration: none;
+}
+
+/* Flip-tile: alternating-mirror super-tile generated via canvas in React.
+   The data-URI is passed in via the --flip-tile-img CSS custom property
+   so it doesn't conflict with the background shorthand on .navbar.         */
+.navbar--texture-flip-tile {
+  background-image: var(--flip-tile-img, none);
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  background-position: left center;
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0 0 0 auto;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 70%;
+  position: relative;
+  z-index: 2;
+}
+
+.nav-links li { flex: 0 0 auto; }
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--white);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-size: 0.92rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid transparent;
+  /* Dark halo separates letters from the bright lava-crack texture */
+  text-shadow:
+    0 1px 6px rgba(0, 0, 0, 0.95),
+    0 0 12px rgba(0, 0, 0, 0.80);
+  transition: color 0.25s ease, border-color 0.25s ease, text-shadow 0.25s ease;
+}
+
+.nav-links a:hover {
+  color: var(--orange);
+  border-color: rgba(244, 186, 64, 0.6);
+  text-shadow:
+    0 1px 6px  rgba(0, 0, 0, 0.95),
+    0 0 10px rgba(200, 80, 10, 0.70);
+}
+
+@media (max-width: 680px) {
+  :root { --nav-height: 124px; }
+
+  .navbar {
+    height: var(--nav-height);
+    align-items: flex-start;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .nav-links {
+    max-width: 100%;
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 0.55rem;
+    gap: 1rem;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Hero                                                                        */
+/* Flame colour: YELLOW (top of page = tip of flame)                          */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.hero {
+  min-height: calc(100vh - var(--nav-height));
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* No full-screen overlay — the title's own glow handles legibility */
+
+.hero-title-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  /* default: bottom-left */
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 2.5rem 3rem;
+  pointer-events: none;
+  transition: align-items 0.3s ease, justify-content 0.3s ease;
+}
+
+.hero-title-overlay--bottom-left   { align-items: flex-end;   justify-content: flex-start; text-align: left;   }
+.hero-title-overlay--bottom-center { align-items: flex-end;   justify-content: center;     text-align: center; }
+.hero-title-overlay--center        { align-items: center;     justify-content: center;     text-align: center; padding-bottom: 12vh; }
+.hero-title-overlay--top-left      { align-items: flex-start; justify-content: flex-start; text-align: left;   }
+
+
+/* Logo title image — replaces text-based hero heading */
+.hero-logo-title {
+  max-width: min(720px, 82vw);
+  width: 100%;
+  height: auto;
+  filter:
+    drop-shadow(0 0  6px rgba(240, 110,  15, 0.95))
+    drop-shadow(0 0 20px rgba(200,  55,  10, 0.85))
+    drop-shadow(0 0 50px rgba(150,  20,   5, 0.60))
+    drop-shadow(0 4px 24px rgba(0,   0,   0, 0.90));
+}
+
+/* ── Split logo assembly ─────────────────────────────────────────────────── */
+
+/* Outer wrapper: logo + transition toggle stacked, no glow on toggle */
+.hero-logo-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1.2rem;
+}
+
+.hero-logo-assembly {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: min(780px, 88vw);
+  filter:
+    drop-shadow(0 0  6px rgba(240, 110,  15, 0.95))
+    drop-shadow(0 0 20px rgba(200,  55,  10, 0.85))
+    drop-shadow(0 0 50px rgba(150,  20,   5, 0.60))
+    drop-shadow(0 4px 24px rgba(0,   0,   0, 0.90));
+}
+
+/* Top row: SC · O · RCHED — aligned to the bottom of the letterforms */
+.hero-logo-top {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.hero-logo-left  { width: 22%; height: auto; flex-shrink: 0; }
+.hero-logo-right { width: 57%; height: auto; flex-shrink: 0; }
+
+/* O icon: pulled in horizontally to close gaps, no bottom lift */
+.hero-logo-o {
+  width: 21%;
+  height: auto;
+  flex-shrink: 0;
+  margin-left:   -2%;
+  margin-right:  -2%;
+  margin-bottom:  0;
+}
+
+/* ANIMATION row sits just below, slightly narrower than SCORCHED */
+.hero-logo-anim {
+  width: 82%;
+  height: auto;
+  margin-top: 2%;
+}
+
+/* O controls: transition + speed toggles side by side */
+.hero-o-controls {
+  display: flex;
+  gap: 0.5rem;
+  pointer-events: auto;
+}
+
+/* O transition toggle bar */
+.hero-o-toggle {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.3rem 0.4rem;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 110, 0, 0.3);
+  border-radius: 2rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@media (max-width: 680px) {
+  .hero-title-overlay { padding: 1.5rem; }
+  .hero-studio-name   { font-size: clamp(1.8rem, 9vw, 3rem); }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Shared section toggle                                                       */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* inline: sits in the normal document flow */
+.stoggle--inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* Team toggle — centred below the heading */
+.team-section .stoggle--inline {
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin-bottom: 2.5rem;
 }
 
-.App-link {
-  color: #61dafb;
+/* cs-toggles wrapper aligns its children to the right */
+.cs-toggles .stoggle--inline {
+  justify-content: flex-end;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* abs-tr: absolutely positioned top-right (coming soon section) */
+.stoggle--abs-tr {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: flex-end;
+  z-index: 3;
+}
+
+.stoggle-btn {
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.55);
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  white-space: nowrap;
+}
+
+.stoggle-btn:hover {
+  background: rgba(0, 0, 0, 0.75);
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.stoggle-btn.active {
+  background: rgba(244, 186, 64, 0.18);
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* About                                                                       */
+/* Flame colour: YELLOW (just below hero — still near top)                    */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.about {
+  max-width: 860px;
+  margin: 5rem auto;
+  text-align: center;
+  padding: 0 2rem;
+}
+
+.about h3 {
+  font-family: 'Rubik Doodle Shadow', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+
+  background: linear-gradient(135deg, var(--orange) 0%, var(--red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about p {
+  color: #ccc;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Coming Soon                                                                 */
+/* Flame colour: ORANGE (mid-page = body of flame)                            */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── SWAP IN YOUR IMAGE ──────────────────────────────────────────────────────
+   Once the aboriginal art asset is ready, set background-image on
+   .coming-soon-section in a separate override or replace the gradient below:
+     background-image: url('./assets/aboriginal_bg.jpg');
+   background-attachment: fixed; can also create a parallax effect.
+── END ──────────────────────────────────────────────────────────────────────── */
+
+/* Shared: vivid placeholder gradient approximating the aboriginal art energy */
+.coming-soon-section {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 12% 20%,  #c03a08 0%, transparent 45%),
+    radial-gradient(ellipse at 82% 12%,  #e8600f 0%, transparent 40%),
+    radial-gradient(ellipse at 48% 78%,  #7a1200 0%, transparent 45%),
+    radial-gradient(ellipse at 70% 52%,  #cc4200 0%, transparent 40%),
+    radial-gradient(ellipse at 18% 68%,  #4a0800 0%, transparent 42%),
+    radial-gradient(ellipse at 88% 82%,  #d95c00 0%, transparent 45%),
+    #080200;
+  background-size: cover;
+  background-position: center;
+  padding: 5rem 0;
+}
+
+/* Toggle pair — always anchored top-right of the section */
+.cs-toggles {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+/* ── Design: Overlay — full-width dark sheet, all BG obscured ── */
+.coming-soon-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.70);
+  z-index: 0;
+}
+
+.coming-soon-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ── Design: Box — frosted glass panel; raw BG bleeds at left/right edges ── */
+.coming-soon-section--box .coming-soon-inner--box {
+  background: rgba(4, 2, 12, 0.72);
+  backdrop-filter: blur(20px) saturate(1.5) brightness(0.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5) brightness(0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 3rem;
+  /* max-width already constrains it — BG shows at sides */
+}
+
+/* ── Design: Cards — no full overlay; each project floats as its own pane ── */
+.coming-soon-section--cards .coming-soon-inner--cards {
+  max-width: var(--container);
+}
+
+.coming-soon-section--cards .project-entry {
+  background: rgba(4, 2, 12, 0.74);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.coming-soon-section--cards .project-entry:last-child { margin-bottom: 0; }
+
+/* Split entries inside cards mode: remove internal separator, use card padding */
+.coming-soon-section--cards .project-entry--split {
+  border-bottom: none;
+  padding: 2.5rem;
+}
+
+/* ── Design: Strip — dark band cuts horizontally; BG fully visible above/below ── */
+.coming-soon-section--strip .coming-soon-inner--strip {
+  max-width: 100%;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.84);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Re-constrain inner content width in strip mode */
+.coming-soon-section--strip .project-list {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Project shared typography                                                   */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+.project-title {
+  font-family: 'Rubik Doodle Shadow', sans-serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  font-weight: 400;
+  margin: 0 0 0.4rem;
+  letter-spacing: 0.02em;
+  color: var(--orange);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+
+.project-tagline {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.92rem;
+  margin: 0 0 1rem;
+}
+
+.project-text p {
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.78;
+  margin-bottom: 0.9rem;
+  max-width: 58ch;
+}
+
+.project-image {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.project-image img {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.04) saturate(1.05);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Project layout: Split (text left | image right)                             */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.project-list--split { display: flex; flex-direction: column; }
+
+.project-entry--split {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 3rem;
+  align-items: center;
+  padding: 3.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.project-entry--split:last-child  { border-bottom: none; }
+
+@media (max-width: 860px) {
+  .project-entry--split { grid-template-columns: 1fr; gap: 1.5rem; }
+  .project-image img    { min-height: 220px; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Project layout: Stacked (image top, text below — 2-col grid of cards)      */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.project-list--stacked {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.project-entry--stacked {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.project-entry--stacked .project-image { flex-shrink: 0; }
+
+.project-entry--stacked .project-image img {
+  min-height: 220px;
+  border: none;
+}
+
+.project-entry--stacked .project-text { padding: 1.5rem; }
+
+.project-entry--stacked .project-text p { max-width: 100%; }
+
+@media (max-width: 680px) {
+  .project-list--stacked { grid-template-columns: 1fr; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Project layout: Banner (each project as full-width image band)             */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.project-list--banner { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.project-entry--banner {
+  position: relative;
+  min-height: 300px;
+  display: flex;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+/* Gradient scrim: transparent top → very dark bottom, for text legibility */
+.project-banner-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.05) 0%,
+    rgba(0, 0, 0, 0.30) 40%,
+    rgba(0, 0, 0, 0.88) 100%
+  );
+}
+
+.project-entry--banner .project-text {
+  position: relative;
+  z-index: 1;
+  padding: 2rem 2.5rem;
+  max-width: 640px;
+}
+
+.project-entry--banner .project-text p { max-width: 52ch; }
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Project layout: List (compact thumbnail + title + tagline)                 */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.project-list--list { display: flex; flex-direction: column; }
+
+.project-entry--list {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.2s ease;
+}
+
+.project-entry--list:last-child { border-bottom: none; }
+.project-entry--list:hover { background: rgba(255, 255, 255, 0.03); }
+
+.project-list-thumb {
+  width: 100px;
+  height: 68px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.project-list-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-list-info .project-title { font-size: 1.2rem; margin-bottom: 0; }
+
+.project-list-info .project-tagline { margin-top: 0.25rem; }
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Team                                                                        */
+/* Flame colour: ORANGE-RED (lower mid-page — flame base approaching)         */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.team-section {
+  max-width: var(--container);
+  margin: 5rem auto;
+  padding: 0 2rem;
+}
+
+.team-section h3 {
+  font-family: 'Rubik Doodle Shadow', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  letter-spacing: -0.01em;
+
+  /* Orange-to-red gradient: flame descending toward base */
+  background: linear-gradient(135deg, var(--orange) 0%, var(--red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.team-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--rule);
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.team-card:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(244, 186, 64, 0.35);
+}
+
+/* Placeholder avatar — replace .team-avatar with <img> once photos are ready */
+.team-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 0.75rem;
+  flex-shrink: 0;
+}
+
+.team-name {
+  font-family: 'Rubik Doodle Shadow', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  margin: 0;
+  color: var(--white);
+}
+
+.team-role {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--orange);
+  margin: 0.1rem 0 0.5rem;
+}
+
+.team-blurb {
+  font-size: 0.9rem;
+  color: #bbb;
+  line-height: 1.7;
+  margin: 0 0 1rem;
+}
+
+.team-links {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.25rem;
+  margin-top: auto;
+}
+
+.team-links a {
+  color: rgba(255,255,255,0.6);
+  transition: color 0.2s ease, transform 0.15s ease;
+}
+
+.team-links a:hover {
+  color: var(--orange);
+  transform: translateY(-2px);
+}
+
+/* ── team-card-body: wraps text content inside cards/rows ── */
+.team-card-body {
+  display: contents; /* transparent wrapper — children behave as direct card children */
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Team layout: Rows                                                           */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.team-grid--rows {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.team-card--row {
+  flex-direction: row;
+  align-items: flex-start;
+  text-align: left;
+  gap: 2rem;
+  padding: 2rem 1.5rem;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  background: transparent;
+  border-radius: 0;
+}
+
+.team-card--row:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--rule); /* keep rule colour stable */
+}
+
+.team-card--row .team-avatar {
+  width: 72px;
+  height: 72px;
+  font-size: 1.7rem;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.team-card--row .team-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.team-card--row .team-blurb { max-width: 70ch; }
+
+.team-card--row .team-links { margin-top: 0.75rem; }
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Team layout: Minimal                                                        */
+/* Clean editorial list — number, name/role, blurb, links in a single row    */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.team-grid--minimal {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--rule);
+}
+
+.team-card--minimal {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+  padding: 2rem 0;
+
+  display: grid;
+  grid-template-columns: auto 1fr 2fr auto;
+  align-items: center;
+  gap: 2rem;
+  text-align: left;
+}
+
+.team-card--minimal:hover { background: rgba(255,255,255,0.025); }
+
+.team-minimal-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.team-minimal-index {
+  font-family: 'Rubik Doodle Shadow', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.1);
+  line-height: 1;
+  min-width: 2.5rem;
+  user-select: none;
+}
+
+.team-card--minimal .team-name  { font-size: 1.2rem; }
+.team-card--minimal .team-blurb { margin: 0; }
+.team-card--minimal .team-links { margin-top: 0; font-size: 1.15rem; justify-content: flex-end; }
+
+@media (max-width: 800px) {
+  .team-card--minimal {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
-  to {
-    transform: rotate(360deg);
+  .team-card--minimal .team-links { justify-content: flex-start; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Team layout: Spotlight                                                      */
+/* One member fills the stage; prev/next arrows navigate                      */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.team-spotlight {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.spotlight-card {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--rule);
+  padding: 3rem;
+  animation: spotlight-in 0.35s ease;
+}
+
+@keyframes spotlight-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.spotlight-avatar {
+  width: 130px;
+  height: 130px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.spotlight-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.spotlight-counter {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin: 0 0 0.75rem;
+}
+
+.spotlight-content .team-name  { font-size: 1.6rem; margin-bottom: 0.25rem; }
+.spotlight-content .team-blurb { max-width: 55ch; }
+.spotlight-content .team-links { font-size: 1.35rem; margin-top: 1rem; }
+
+.spotlight-nav {
+  grid-row: 1;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.spotlight-nav:hover {
+  background: rgba(244, 186, 64, 0.12);
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.spotlight-dots {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.spotlight-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.spotlight-dot.active {
+  background: var(--orange);
+  border-color: var(--orange);
+  transform: scale(1.3);
+}
+
+@media (max-width: 680px) {
+  .team-spotlight {
+    grid-template-columns: auto 1fr auto;
+    gap: 0.75rem;
   }
+  .spotlight-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+  }
+  .spotlight-content .team-links { justify-content: center; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Team CTA button                                                             */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.team-cta {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.team-cta-btn {
+  display: inline-block;
+  padding: 0.75rem 2.25rem;
+  background: transparent;
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  font-family: 'Rubik Doodle Shadow', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.team-cta-btn:hover {
+  background: var(--orange);
+  color: var(--black);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Socials bar                                                                 */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.socials {
+  background: var(--red);
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 1.8rem;
+  padding: 1.5rem 0 1rem;
+}
+
+.socials a {
+  color: var(--white);
+  transition: color 0.25s ease, transform 0.2s ease;
+}
+
+.socials a:hover {
+  color: var(--yellow);
+  transform: translateY(-2px);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Contact                                                                     */
+/* Flame colour: RED (bottom of page = base of flame)                         */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.contact {
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.contact h3 {
+  font-family: 'Rubik Doodle Shadow', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  background: linear-gradient(135deg, var(--orange) 0%, var(--red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.contact > p {
+  color: #bbb;
+  margin-bottom: 2rem;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-width: 440px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+  padding: 0.85rem 0.9rem;
+  background: rgba(255,255,255,0.06);
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 0;
+  font-family: inherit;
+  font-size: 0.95rem;
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.contact-form select {
+  /* Custom arrow using CSS — no browser default UI */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ffffff99' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.contact-form select option {
+  background: #1a1a1a;
+  color: var(--white);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(255,255,255,0.45);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus {
+  border-color: rgba(233, 52, 36, 0.65);
+  box-shadow: 0 0 0 3px rgba(233, 52, 36, 0.15);
+  outline: none;
+}
+
+.contact-form button {
+  background: linear-gradient(90deg, var(--red), var(--orange));
+  border: none;
+  color: var(--black);
+  font-family: 'Rubik Doodle Shadow', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.9rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.contact-form button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.contact-form button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.form-notice {
+  font-size: 0.85rem;
+  color: #bbb;
+  margin: 0;
+  text-align: center;
+}
+
+.form-notice.success { color: #6dcc7f; }
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Footer                                                                      */
+/* ─────────────────────────────────────────────────────────────────────────── */
+footer {
+  text-align: center;
+  padding: 1.5rem 0;
+  border-top: 1px solid #222;
+  color: #666;
+  font-size: 0.88rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Hero — scroll-driven magma crack animation                                  */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* Extra scroll room: user scrolls through the extended height to reveal
+   the cracks, while the visual content remains sticky in the viewport */
+.hero-scroll-track {
+  height: 460vh;
+  position: relative;
+}
+
+/* Sticky viewport — sits just below the fixed navbar */
+.hero-sticky {
+  position: sticky;
+  top: var(--nav-height);
+  height: calc(100vh - var(--nav-height));
+  overflow: hidden;
+}
+
+/* Pure black base — replaces the old hero background image */
+.hero-bg-base {
+  position: absolute;
+  inset: 0;
+  background: #000;
+}
+
+
+.hero-mode-btn {
+  padding: 0.35rem 1rem;
+  border: 1px solid rgba(255, 110, 0, 0.22);
+  background: transparent;
+  color: rgba(255, 175, 65, 0.55);
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 1.5rem;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.hero-mode-btn:hover {
+  background: rgba(255, 85, 0, 0.14);
+  color: rgba(255, 190, 80, 0.9);
+  border-color: rgba(255, 110, 0, 0.5);
+}
+
+.hero-mode-btn.active {
+  background: rgba(255, 85, 0, 0.28);
+  color: rgba(255, 215, 100, 1);
+  border-color: rgba(255, 125, 0, 0.7);
 }
